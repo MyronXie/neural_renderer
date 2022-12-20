@@ -45,6 +45,7 @@ class Renderer(nn.Module):
             self.viewing_angle = viewing_angle
             self.eye = [0, 0, -(1. / math.tan(math.radians(self.viewing_angle)) + 1)]
             self.camera_direction = [0, 0, 1]
+            self.camera_up = [0, 1, 0]
         else:
             raise ValueError('Camera mode has to be one of projection, look or look_at')
 
@@ -87,12 +88,12 @@ class Renderer(nn.Module):
 
         # viewpoint transformation
         if self.camera_mode == 'look_at':
-            vertices = nr.look_at(vertices, self.eye)
+            vertices = nr.look_at(vertices, self.eye, up=self.camera_up)
             # perspective transformation
             if self.perspective:
                 vertices = nr.perspective(vertices, angle=self.viewing_angle)
         elif self.camera_mode == 'look':
-            vertices = nr.look(vertices, self.eye, self.camera_direction)
+            vertices = nr.look(vertices, self.eye, self.camera_direction, self.camera_up)
             # perspective transformation
             if self.perspective:
                 vertices = nr.perspective(vertices, angle=self.viewing_angle)
@@ -122,12 +123,12 @@ class Renderer(nn.Module):
 
         # viewpoint transformation
         if self.camera_mode == 'look_at':
-            vertices = nr.look_at(vertices, self.eye)
+            vertices = nr.look_at(vertices, self.eye, up=self.camera_up)
             # perspective transformation
             if self.perspective:
                 vertices = nr.perspective(vertices, angle=self.viewing_angle)
         elif self.camera_mode == 'look':
-            vertices = nr.look(vertices, self.eye, self.camera_direction)
+            vertices = nr.look(vertices, self.eye, self.camera_direction, self.camera_up)
             # perspective transformation
             if self.perspective:
                 vertices = nr.perspective(vertices, angle=self.viewing_angle)
@@ -168,12 +169,12 @@ class Renderer(nn.Module):
 
         # viewpoint transformation
         if self.camera_mode == 'look_at':
-            vertices = nr.look_at(vertices, self.eye)
+            vertices = nr.look_at(vertices, self.eye, up=self.camera_up)
             # perspective transformation
             if self.perspective:
                 vertices = nr.perspective(vertices, angle=self.viewing_angle)
         elif self.camera_mode == 'look':
-            vertices = nr.look(vertices, self.eye, self.camera_direction)
+            vertices = nr.look(vertices, self.eye, self.camera_direction, self.camera_up)
             # perspective transformation
             if self.perspective:
                 vertices = nr.perspective(vertices, angle=self.viewing_angle)
@@ -216,12 +217,12 @@ class Renderer(nn.Module):
 
         # viewpoint transformation
         if self.camera_mode == 'look_at':
-            vertices = nr.look_at(vertices, self.eye)
+            vertices = nr.look_at(vertices, self.eye, up=self.camera_up)
             # perspective transformation
             if self.perspective:
                 vertices = nr.perspective(vertices, angle=self.viewing_angle)
         elif self.camera_mode == 'look':
-            vertices = nr.look(vertices, self.eye, self.camera_direction)
+            vertices = nr.look(vertices, self.eye, self.camera_direction, self.camera_up)
             # perspective transformation
             if self.perspective:
                 vertices = nr.perspective(vertices, angle=self.viewing_angle)

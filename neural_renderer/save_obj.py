@@ -15,7 +15,7 @@ def create_texture_image(textures, texture_size_out=16):
     vertices = torch.zeros((num_faces, 3, 2), dtype=torch.float32)  # [:, :, XY]
     face_nums = torch.arange(num_faces)
     column = face_nums % tile_width
-    row = face_nums / tile_width
+    row = torch.div(face_nums, tile_width, rounding_mode='floor') # row = face_nums // tile_width
     vertices[:, 0, 0] = column * texture_size_out
     vertices[:, 0, 1] = row * texture_size_out
     vertices[:, 1, 0] = column * texture_size_out
@@ -37,7 +37,7 @@ def create_texture_image(textures, texture_size_out=16):
     return image, vertices
 
 
-def save_obj(filename, vertices, faces, textures=None):
+def save_obj(filename, vertices, faces, textures=None, texture_size_out=16):
     assert vertices.ndimension() == 2
     assert faces.ndimension() == 2
 
@@ -45,7 +45,7 @@ def save_obj(filename, vertices, faces, textures=None):
         filename_mtl = filename[:-4] + '.mtl'
         filename_texture = filename[:-4] + '.png'
         material_name = 'material_1'
-        texture_image, vertices_textures = create_texture_image(textures)
+        texture_image, vertices_textures = create_texture_image(textures, texture_size_out)
         imsave(filename_texture, texture_image)
 
     faces = faces.detach().cpu().numpy()
